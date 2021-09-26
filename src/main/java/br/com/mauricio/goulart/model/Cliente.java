@@ -1,9 +1,23 @@
 package br.com.mauricio.goulart.model;
 
-public class Cliente {
+import lombok.*;
 
-    private int id;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+
+@Getter
+@Setter
+@ToString
+@AllArgsConstructor
+@NoArgsConstructor
+public class Cliente {
+    private Long id;
     private String nome;
+    private String cpf;
+    private String telefone;
+    private String email;
+    private String genero;
     private Endereco endereco;
+
 
 }
