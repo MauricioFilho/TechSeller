@@ -17,7 +17,8 @@ public class ClienteService {
 
     public HttpServletResponse salvar(HttpServletRequest request, HttpServletResponse response){
         Cliente cliente = criarCliente(request);
-        popularCookies(cliente, response);
+        response.addCookie(new Cookie("clienteID=" + cliente.getId(), cliente.toString()));
+        //popularCookies(cliente, response);
         return response;
     }
 
@@ -55,6 +56,7 @@ public class ClienteService {
     }
 
     private void popularCookies(Cliente cliente, HttpServletResponse response) {
+        response.addCookie(new Cookie("cliente", cliente.toString()));
         response.addCookie(new Cookie("idCliente", cliente.getId().toString()));
         response.addCookie(new Cookie("nomeCliente", cliente.getNome()));
         response.addCookie(new Cookie("cpfCliente", cliente.getCpf()));
