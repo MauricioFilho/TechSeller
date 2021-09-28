@@ -12,13 +12,12 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class ClienteService {
-
     EnderecoService enderecoService = new EnderecoService();
 
     public HttpServletResponse salvar(HttpServletRequest request, HttpServletResponse response){
         Cliente cliente = criarCliente(request);
-        response.addCookie(new Cookie("clienteID=" + cliente.getId(), cliente.toString()));
-        //popularCookies(cliente, response);
+        Cookie cookie = new Cookie("cliente" + cliente.getId(), cliente.toString());
+        response.addCookie(cookie);
         return response;
     }
 
@@ -45,7 +44,7 @@ public class ClienteService {
         return Arrays.stream(request.getCookies()).collect(Collectors.toList());
     }
 
-    private List<Cookie> findCookiesByKeyList(List<String> keysList, HttpServletRequest request) {
+    public List<Cookie> findCookiesByKeyList(List<String> keysList, HttpServletRequest request) {
         List<Cookie> cookieList = findAllCookies(request);
         for (String key: keysList) {
             cookieList = cookieList.stream()
@@ -55,7 +54,7 @@ public class ClienteService {
         return cookieList;
     }
 
-    private void popularCookies(Cliente cliente, HttpServletResponse response) {
+    /*private void popularCookies(Cliente cliente, HttpServletResponse response) {
         response.addCookie(new Cookie("cliente", cliente.toString()));
         response.addCookie(new Cookie("idCliente", cliente.getId().toString()));
         response.addCookie(new Cookie("nomeCliente", cliente.getNome()));
@@ -70,16 +69,15 @@ public class ClienteService {
         response.addCookie(new Cookie("cidadeCliente", cliente.getEndereco().getCidade()));
         response.addCookie(new Cookie("paisCliente", cliente.getEndereco().getPais()));
         response.addCookie(new Cookie("detalhesCliente", cliente.getEndereco().getDetalhes()));
-    }
+    }*/
 
     private Cliente criarCliente(HttpServletRequest request) {
         return new Cliente(
-                Long.parseLong(request.getParameter("idCliente")),
+                Integer.parseInt(request.getParameter("idCliente")),
                 request.getParameter("nomeCliente"),
                 request.getParameter("cpfCliente"),
                 request.getParameter("telefoneCliente"),
                 request.getParameter("emailCliente"),
-                request.getParameter("generoCliente"),
                 enderecoService.criarEndereco(request));
     }
 }

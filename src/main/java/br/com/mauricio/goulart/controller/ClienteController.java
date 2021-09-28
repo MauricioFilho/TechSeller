@@ -6,17 +6,17 @@ import br.com.mauricio.goulart.service.ClienteService;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(name = "ClienteServlet", urlPatterns = "/criar-cliente")
-public class ClienteController {
+@WebServlet(name = "clienteServlet", urlPatterns = "/cadastro-cliente")
+public class ClienteController extends HttpServlet {
     private final ClienteService clienteService = new ClienteService();
-    private Cliente cliente = new Cliente();
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/student-record.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("pages/Cliente.jsp");
         dispatcher.forward(request, response);
     }
 
@@ -24,9 +24,9 @@ public class ClienteController {
 
         processRequest(request, response);
     }
-
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        response = clienteService.salvar(request, response);
 
         processRequest(request, response);
     }

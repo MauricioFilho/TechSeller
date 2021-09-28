@@ -6,18 +6,12 @@ import javax.servlet.http.HttpServletRequest;
 
 public class EnderecoService {
 
-    Endereco endereco = new Endereco();
-
     public Endereco criarEndereco(HttpServletRequest request) {
-        endereco = new Endereco(
-                Long.parseLong(request.getParameter("idEndereco")),
+        return new Endereco(
                 request.getParameter("ruaCliente"),
                 request.getParameter("cepCliente"),
                 request.getParameter("bairroCliente"),
                 request.getParameter("cidadeCliente"),
-                request.getParameter("paisCliente"),
-                request.getParameter("detalhesCliente"));
-
-        return endereco;
+                request.getParameter("paisCliente"));
     }
 }
