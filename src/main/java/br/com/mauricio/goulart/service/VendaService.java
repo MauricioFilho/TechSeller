@@ -1,5 +1,6 @@
 package br.com.mauricio.goulart.service;
 
+import br.com.mauricio.goulart.model.Cliente;
 import br.com.mauricio.goulart.model.Venda;
 
 import javax.servlet.http.Cookie;
@@ -57,7 +58,6 @@ public class VendaService {
         return new Venda(
                 Integer.parseInt(request.getParameter("idVenda")),
                 Integer.parseInt(request.getParameter("quantidadeVenda")),
-                request.getParameter("nomeProduto"),
-                Integer.parseInt(request.getParameter("idCliente")));
+                request.getParameter("nomeProduto"),new Cliente());
     }
 }

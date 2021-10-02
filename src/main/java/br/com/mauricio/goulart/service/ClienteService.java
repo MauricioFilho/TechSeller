@@ -2,74 +2,42 @@ package br.com.mauricio.goulart.service;
 
 import br.com.mauricio.goulart.model.Cliente;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 public class ClienteService {
-    EnderecoService enderecoService = new EnderecoService();
+    private final EnderecoService enderecoService = new EnderecoService();
 
-    public HttpServletResponse salvar(HttpServletRequest request, HttpServletResponse response){
-        Cliente cliente = criarCliente(request);
-        Cookie cookie = new Cookie("cliente" + cliente.getId(), cliente.toString());
-        response.addCookie(cookie);
-        return response;
-    }
-
-    public HttpServletResponse deletar(List<String> keysList, HttpServletRequest request, HttpServletResponse response){
-        final List<Cookie> cookieList = findCookiesByKeyList(keysList, request);
-        cookieList.forEach(cookie -> {
-            cookie.setMaxAge(0);
-            response.addCookie(cookie);
-        });
-        return response;
-    }
-
-    public HttpServletResponse update(Map<String, String> alteracaoCookieMap , HttpServletRequest request, HttpServletResponse response){
-        final List<Cookie> cookieList = findCookiesByKeyList(new ArrayList<>(alteracaoCookieMap.keySet()), request);
-
-        cookieList.forEach(cookie -> {
-            cookie.setValue(alteracaoCookieMap.get(cookie.getName()));
-            response.addCookie(cookie);
-        });
-        return response;
-    }
-
-    private List<Cookie> findAllCookies(HttpServletRequest request){
-        return Arrays.stream(request.getCookies()).collect(Collectors.toList());
-    }
-
-    public List<Cookie> findCookiesByKeyList(List<String> keysList, HttpServletRequest request) {
-        List<Cookie> cookieList = findAllCookies(request);
-        for (String key: keysList) {
-            cookieList = cookieList.stream()
-                    .filter(c -> c.getName().equals(key))
-                    .collect(Collectors.toList());
+    public List<Cliente> salvar(HttpServletRequest request, List<Cliente> clientes) {
+        Cliente clienteAlterado = findCliente(clientes, request);
+        if(clienteAlterado != null) {
+            Cliente clienteAlteracao = criarCliente(request);
+            return update(clientes, clienteAlteracao, clienteAlterado);
+        } else {
+            clientes.add(criarCliente(request));
         }
-        return cookieList;
+        return clientes;
     }
 
-    /*private void popularCookies(Cliente cliente, HttpServletResponse response) {
-        response.addCookie(new Cookie("cliente", cliente.toString()));
-        response.addCookie(new Cookie("idCliente", cliente.getId().toString()));
-        response.addCookie(new Cookie("nomeCliente", cliente.getNome()));
-        response.addCookie(new Cookie("cpfCliente", cliente.getCpf()));
-        response.addCookie(new Cookie("telefoneCliente", cliente.getTelefone()));
-        response.addCookie(new Cookie("emailCliente", cliente.getEmail()));
-        response.addCookie(new Cookie("generoCliente", cliente.getGenero()));
-        response.addCookie(new Cookie("idEndereco", cliente.getEndereco().getId().toString()));
-        response.addCookie(new Cookie("ruaCliente", cliente.getEndereco().getRua()));
-        response.addCookie(new Cookie("cepCliente", cliente.getEndereco().getCep()));
-        response.addCookie(new Cookie("bairroCliente", cliente.getEndereco().getBairro()));
-        response.addCookie(new Cookie("cidadeCliente", cliente.getEndereco().getCidade()));
-        response.addCookie(new Cookie("paisCliente", cliente.getEndereco().getPais()));
-        response.addCookie(new Cookie("detalhesCliente", cliente.getEndereco().getDetalhes()));
-    }*/
+    public List<Cliente> deletar(HttpServletRequest request, List<Cliente> clientes) {
+        int id = Integer.parseInt(request.getParameter("idCliente"));
+        return clientes.stream().filter(c -> c.getId() != id).collect(Collectors.toList());
+    }
+
+    private List<Cliente> update(List<Cliente> clientes, Cliente clienteAlteracao, Cliente clienteAlterado){
+        int clienteIndex = clientes.indexOf(clienteAlterado);
+        if (clienteIndex != -1) {
+            clientes.set(clienteIndex, clienteAlteracao);
+        }
+        return clientes;
+    }
+
+
+    public Cliente findCliente(List<Cliente> clientes, HttpServletRequest request) {
+        int id = Integer.parseInt(request.getParameter("idCliente"));
+        return clientes.stream().filter(c -> c.getId() ==  id).findAny().orElse(null);
+    }
 
     private Cliente criarCliente(HttpServletRequest request) {
         return new Cliente(

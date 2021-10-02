@@ -1,0 +1,30 @@
+/*-------------| FEED NOTICIAS RODAPE |--------------*/
+/* Remover todas as referencias anteriores a .main.feed */
+.main.feed { z-index: 6; top: auto; background: #dcdcdc url('/resources/assets/img/tx/metal-3.gif'); color: #333333; font-size: 50%; }
+.main.feed .carousel { margin: 0; }
+.main.feed .news-title,.main.feed p { margin: 0; }
+.main.feed .news-title { font-size: inherit; color: #333333;  margin-top: 6px; }
+.main.feed p { line-height: 18px; font-size: 20px; font-weight:normal; color: #000000; }
+.main.feed p { text-shadow: 0 1px 2px rgba(255,255,255,0.5); }
+.main.feed .title-and-date { line-height: 29px; font-size: 20px; border-bottom: 1px solid #999999;  }
+
+.main.feed .news-source { color: #333333; font-weight: bold; background: #ffffff url('/resources/assets/img/social/icon-bmw-tv-48.png') no-repeat center; width: 100px; }
+.main.feed .news-source .news-source-date { line-height: 24px; font-size: 18px; height: 24px; text-align: right; }
+.main.feed .news-source .news-source-time { line-height: 24px; font-size: 18px; height: 24px; text-align: right; }
+.main.feed .news-source.googleplus { background-image: url('/resources/assets/img/social/googleplus.png'); }
+.main.feed .news-source.facebook { background-image: url('/resources/assets/img/social/facebook.png'); }
+.main.feed .news-source.twitter { background-image: url('/resources/assets/img/social/twitter.png'); }
+.main.feed .news-source.rss { background-image: url('/resources/assets/img/social/rss.png'); }
+
+.main.feed table.news-frame{ width: 100%; height:100px; vertical-align: middle; color: #333333; }
+.main.feed .feed-index { padding: 0 20px; background: #FFFFFF; width: 350px;  }
+.main.feed .feed-index .names { line-height: 29px; font-size: 20px; border-bottom: 1px solid #999999; margin-top: 6px; }
+.main.feed .feed-index .values { line-height: 50px; font-size: 30px; }
+.main.feed .feed-index .index-name { text-align: left; }
+.main.feed .feed-index .bir { text-align: right; }
+.main.feed .feed-index .index-dir { text-align: left; }
+.main.feed .feed-index .index-val { text-align: right; }
+
+.main.feed .feed-index.good { color: #114400; }
+.main.feed .feed-index.normal { color: #333333; }
+.main.feed .feed-index.bad { color: #881100; }
