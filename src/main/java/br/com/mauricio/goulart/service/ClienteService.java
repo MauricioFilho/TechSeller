@@ -10,7 +10,10 @@ public class ClienteService {
     private final EnderecoService enderecoService = new EnderecoService();
 
     public List<Cliente> salvar(HttpServletRequest request, List<Cliente> clientes) {
-        Cliente clienteAlterado = findCliente(clientes, request);
+        Cliente clienteAlterado = null;
+        if(!clientes.isEmpty()) {
+            clienteAlterado = findCliente(clientes, request);
+        }
         if(clienteAlterado != null) {
             Cliente clienteAlteracao = criarCliente(request);
             return update(clientes, clienteAlteracao, clienteAlterado);

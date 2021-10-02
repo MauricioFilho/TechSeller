@@ -1,63 +1,46 @@
 package br.com.mauricio.goulart.service;
 
-import br.com.mauricio.goulart.model.Cliente;
 import br.com.mauricio.goulart.model.Venda;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 public class VendaService {
-    ClienteService clienteService = new ClienteService();
-
-    public HttpServletResponse salvar(HttpServletRequest request, HttpServletResponse response){
-        String keyString = "ClienteID="  + request.getParameter("idCliente");
-        Venda venda = criarVenda(request);
-        response.addCookie(new Cookie("VendaID=" + venda.getId(), venda.toString()));
-        return response;
-    }
-
-    public HttpServletResponse deletar(List<String> keysList, HttpServletRequest request, HttpServletResponse response){
-        final List<Cookie> cookieList = findCookiesByKeyList(keysList, request);
-        cookieList.forEach(cookie -> {
-            cookie.setMaxAge(0);
-            response.addCookie(cookie);
-        });
-        return response;
-    }
-
-    public HttpServletResponse update(Map<String, String> alteracaoCookieMap , HttpServletRequest request, HttpServletResponse response){
-        final List<Cookie> cookieList = findCookiesByKeyList(new ArrayList<>(alteracaoCookieMap.keySet()), request);
-
-        cookieList.forEach(cookie -> {
-            cookie.setValue(alteracaoCookieMap.get(cookie.getName()));
-            response.addCookie(cookie);
-        });
-        return response;
-    }
-
-    private List<Cookie> findAllCookies(HttpServletRequest request){
-        return Arrays.stream(request.getCookies()).collect(Collectors.toList());
-    }
-    private List<Cookie> findCookiesByKeyList(List<String> keysList, HttpServletRequest request) {
-        List<Cookie> cookieList = findAllCookies(request);
-        for (String key: keysList) {
-            cookieList = cookieList.stream()
-                    .filter(c -> c.getName().equals(key))
-                    .collect(Collectors.toList());
+    public List<Venda> salvar(HttpServletRequest req, List<Venda> vendas) {
+        Venda vendaAlterada = findVenda(vendas, req);
+        if(vendaAlterada != null) {
+            Venda vendaAlteracao = criarVenda(req);
+            return update(vendas, vendaAlteracao, vendaAlterada);
+        } else {
+            vendas.add(criarVenda(req));
         }
-        return cookieList;
+        return vendas;
     }
 
-    private Venda criarVenda(HttpServletRequest request) {
+    public List<Venda> deletar(HttpServletRequest req, List<Venda> vendas) {
+        int id = Integer.parseInt(req.getParameter("idVenda"));
+        return vendas.stream().filter(v -> v.getId() != id).collect(Collectors.toList());
+    }
+
+    private List<Venda> update(List<Venda> vendas, Venda vendaAlteracao, Venda vendaAlterada){
+        int vendaIndex = vendas.indexOf(vendaAlterada);
+        if (vendaIndex != -1) {
+            vendas.set(vendaIndex, vendaAlteracao);
+        }
+        return vendas;
+    }
+
+    public Venda findVenda(List<Venda> vendas, HttpServletRequest req) {
+        int id = Integer.parseInt(req.getParameter("idVenda"));
+        return vendas.stream().filter(v -> v.getId() ==  id).findAny().orElse(null);
+    }
+
+    private Venda criarVenda(HttpServletRequest req) {
         return new Venda(
-                Integer.parseInt(request.getParameter("idVenda")),
-                Integer.parseInt(request.getParameter("quantidadeVenda")),
-                request.getParameter("nomeProduto"),new Cliente());
+                Integer.parseInt(req.getParameter("idVenda")),
+                Integer.parseInt(req.getParameter("quantidadeVenda")),
+                req.getParameter("nomeProduto"),
+                Float.parseFloat(req.getParameter("valorProduto")));
     }
 }

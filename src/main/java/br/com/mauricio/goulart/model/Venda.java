@@ -5,12 +5,16 @@ import lombok.*;
 @Getter
 @Setter
 @ToString
+@EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode
 public class Venda {
     private int id;
     private int quantidade;
     private String nome;
-    private Cliente cliente;
+    private Float valor;
+
+    public float getValorTotal() {
+        return valor * quantidade;
+    }
 }

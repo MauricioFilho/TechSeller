@@ -3,11 +3,9 @@ package br.com.mauricio.goulart.util;
 import br.com.mauricio.goulart.model.Cliente;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 @Getter
 @NoArgsConstructor
-@ToString
 public class ClienteHtmlUtil {
     private final String htmlHeader = "<!DOCTYPE html>\n" + "<html>\n" + "<head>\n" +
             "    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n" +
@@ -21,6 +19,7 @@ public class ClienteHtmlUtil {
             "    <link rel=\"stylesheet\" href=\"../css/style.css\"/>\n" +
             "    <title>Cadastro Clientes</title>\n" +
             "</head></body>";
+
     private final String htmlFooter = "</body></html>";
 
     private final String htmlCadastroForm = "<form class=\"form-horizontal\" action=\"cadastro-cliente\" method=\"post\">\n" +
@@ -28,7 +27,7 @@ public class ClienteHtmlUtil {
             "            <h1>Cadastro Cliente</h1>\n" +
             "        </div>\n" +
             "        <div class=\"col-xs-3\">\n" +
-            "            <div class=\"checkbox span3\"><label>C&oacute;digo</label><input class=\"input-group text-center\" type=\"text\" name=\"idCliente\" size=\"4\" autofocus required></div>\n" +
+            "            <div class=\"checkbox span3\"><label>C&oacute;digo</label><input class=\"input-group text-center\" type=\"text\" name=\"idCliente\" size=\"4\" autofocus></div>\n" +
             "            <div class=\"checkbox span3\"><label>Nome</label><input class=\"input-group\" type=\"text\" name=\"nomeCliente\" size=\"35\"></div>\n" +
             "            <div class=\"checkbox span2\"><label>CPF</label><input class=\"input-group\" type=\"text\" name=\"cpfCliente\" size=\"9\"></div>\n" +
             "            <div class=\"checkbox span2\"><label>Telefone</label><input class=\"input-group\" type=\"tel\" name=\"telefoneCliente\" size=\"13\"></div>\n" +
@@ -43,6 +42,7 @@ public class ClienteHtmlUtil {
             "            <div class=\"checkbox span4\">\n" +
             "                <input class=\"btn-group btn-success\" name=\"action\" type=\"submit\" value=\"Salvar\">\n" +
             "                <input class=\"btn-group btn-danger\" name=\"action\" type=\"submit\" value=\"Deletar\">\n" +
+            "                <input class=\"btn-group btn-info\" name=\"action\" type=\"submit\" value=\"Vendas\">\n" +
             "            </div>\n" +
             "        </div>\n" +
             "    </form>";
