@@ -40,12 +40,13 @@ public class ClienteHtmlUtil {
             "            <div class=\"checkbox span1\"><label>UF</label><input class=\"input-group\" type=\"text\" name=\"cepCliente\" size=\"2\"></div>\n" +
             "            <div class=\"checkbox span4\"><label>Rua</label><input class=\"input-group\" type=\"text\" name=\"ruaCliente\" size=\"35\"></div>\n" +
             "            <div class=\"checkbox span2\"><label>Bairro</label><input class=\"input-group\" type=\"text\" name=\"bairroCliente\" size=\"12\"></div>\n" +
-            "            <div class=\"checkbox span1\"><label>Pa&iacute;s</label><input class=\"input-group\" type=\"text\" name=\"paisCliente\" size=\"13\">\n" +
-            "            </div>\n" +
+            "            <div class=\"checkbox span1\"><label>Pa&iacute;s</label><input class=\"input-group\" type=\"text\" name=\"paisCliente\" size=\"13\">\n</div>" +
+            "            \n" +
             "            <div class=\"checkbox span4\">\n" +
             "                <input class=\"btn-group btn-success\" name=\"action\" type=\"submit\" value=\"Salvar\">\n" +
             "                <input class=\"btn-group btn-danger\" name=\"action\" type=\"submit\" value=\"Deletar\">\n" +
             "                <input class=\"btn-group btn-info\" name=\"action\" type=\"submit\" value=\"Vendas\">\n" +
+            "                <input class=\"btn-group btn-primary\" name=\"action\" type=\"submit\" value=\"Listagem\">\n" +
             "            </div>\n" +
             "        </div>\n" +
             "    </form>";

@@ -40,6 +40,7 @@ public class VendaHtmlUtil {
             "                <input class=\"btn-group btn-success\" name=\"action\" type=\"submit\" value=\"Salvar\">\n" +
             "                <input class=\"btn-group btn-danger\" name=\"action\" type=\"submit\" value=\"Deletar\">\n" +
             "                <input class=\"btn-group btn-info\" name=\"action\" type=\"submit\" value=\"Clientes\">\n" +
+            "                <input class=\"btn-group btn-primary\" name=\"action\" type=\"submit\" value=\"Listagem\">\n" +
             "            </div>\n" +
             "        </div>\n" +
             "    </form>";

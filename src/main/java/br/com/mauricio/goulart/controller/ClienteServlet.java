@@ -3,10 +3,8 @@ package br.com.mauricio.goulart.controller;
 import br.com.mauricio.goulart.model.Cliente;
 import br.com.mauricio.goulart.service.ClienteService;
 import br.com.mauricio.goulart.util.ClienteHtmlUtil;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -60,6 +58,10 @@ public class ClienteServlet extends HttpServlet {
                 break;
             case "Vendas":
                 resp.sendRedirect( req.getContextPath() + "/cadastro-vendas");
+                break;
+            case "Listagem":
+                resp.sendRedirect(req.getContextPath() + "/listagem");
+                break;
         }
     }
 }

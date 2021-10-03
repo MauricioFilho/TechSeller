@@ -24,7 +24,6 @@ public class VendaServlet extends HttpServlet {
     VendaHtmlUtil vendaHtmlUtil = new VendaHtmlUtil();
     ClienteService clienteService = new ClienteService();
     private List<Venda> vendas = new ArrayList<>();
-    private Cliente cliente = new Cliente();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws  IOException {
@@ -36,7 +35,6 @@ public class VendaServlet extends HttpServlet {
         writer.println(vendaHtmlUtil.getHtmlTableColumn());
         if (!vendas.isEmpty()) {
             vendas.forEach(venda -> writer.println(vendaHtmlUtil.getHtmlTableRowsWithCliente(venda)));
-
         } else {
             writer.println(vendaHtmlUtil.getHtmlTableEmptyRows());
         }
@@ -52,8 +50,7 @@ public class VendaServlet extends HttpServlet {
         switch (action) {
             case "Salvar":
                 List<Cliente> clientes = (List<Cliente>) session.getAttribute("clientes");
-                cliente = clienteService.findCliente(clientes, req);
-
+                Cliente cliente = clienteService.findCliente(clientes, req);
                 vendas = vendaService.salvar(req, vendas, cliente);
                 session.setAttribute("vendas", vendas);
                 doGet(req, resp);
@@ -65,6 +62,10 @@ public class VendaServlet extends HttpServlet {
                 break;
             case "Clientes":
                 resp.sendRedirect(req.getContextPath() + "/cadastro-cliente");
+                break;
+            case "Listagem":
+                resp.sendRedirect(req.getContextPath() + "/listagem");
+                break;
         }
     }
 }
