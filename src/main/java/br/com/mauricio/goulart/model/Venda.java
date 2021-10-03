@@ -13,6 +13,7 @@ public class Venda {
     private int quantidade;
     private String nome;
     private Float valor;
+    private Cliente cliente;
 
     public float getValorTotal() {
         return valor * quantidade;

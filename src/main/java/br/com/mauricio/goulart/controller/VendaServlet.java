@@ -7,7 +7,6 @@ import br.com.mauricio.goulart.service.VendaService;
 import br.com.mauricio.goulart.util.VendaHtmlUtil;
 import lombok.NoArgsConstructor;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -23,7 +22,9 @@ import java.util.List;
 public class VendaServlet extends HttpServlet {
     VendaService vendaService = new VendaService();
     VendaHtmlUtil vendaHtmlUtil = new VendaHtmlUtil();
+    ClienteService clienteService = new ClienteService();
     private List<Venda> vendas = new ArrayList<>();
+    private Cliente cliente = new Cliente();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws  IOException {
@@ -34,7 +35,8 @@ public class VendaServlet extends HttpServlet {
         writer.println(vendaHtmlUtil.getHtmlCadastroForm());
         writer.println(vendaHtmlUtil.getHtmlTableColumn());
         if (!vendas.isEmpty()) {
-                vendas.forEach(venda -> writer.println(vendaHtmlUtil.getHtmlTableRows(venda)));
+            vendas.forEach(venda -> writer.println(vendaHtmlUtil.getHtmlTableRowsWithCliente(venda)));
+
         } else {
             writer.println(vendaHtmlUtil.getHtmlTableEmptyRows());
         }
@@ -43,13 +45,16 @@ public class VendaServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String action = req.getParameter("action");
-        HttpSession session = req.getSession();
+        HttpSession session = req.getSession(true);
 
         switch (action) {
             case "Salvar":
-                vendas = vendaService.salvar(req, vendas);
+                List<Cliente> clientes = (List<Cliente>) session.getAttribute("clientes");
+                cliente = clienteService.findCliente(clientes, req);
+
+                vendas = vendaService.salvar(req, vendas, cliente);
                 session.setAttribute("vendas", vendas);
                 doGet(req, resp);
                 break;
@@ -59,7 +64,7 @@ public class VendaServlet extends HttpServlet {
                 doGet(req, resp);
                 break;
             case "Clientes":
-                resp.sendRedirect("/cadastro-cliente");
+                resp.sendRedirect(req.getContextPath() + "/cadastro-cliente");
         }
     }
 }

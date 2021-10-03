@@ -1,5 +1,6 @@
 package br.com.mauricio.goulart.util;
 
+import br.com.mauricio.goulart.model.Cliente;
 import br.com.mauricio.goulart.model.Venda;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,14 +24,18 @@ public class VendaHtmlUtil {
     private final String htmlFooter = "</body></html>";
 
     private final String htmlCadastroForm = "<form class=\"form-horizontal\" action=\"cadastro-vendas\" method=\"post\">\n" +
-            "        <div class=\"page-header\">\n" +
-            "            <h1>Cadastro Vendas</h1>\n" +
+            "        <div class=\"page-header\" align=\"center\">\n" +
+            "            <img src=\"../resources/img/logo.png\">\n" +
+            "           <div align=\"left\">\n" +
+            "               <h1>Cadastro Vendas</h1>\n" +
+            "           </div>\n" +
             "        </div>\n" +
             "        <div class=\"col-xs-3\">\n" +
             "            <div class=\"checkbox span4\"><label>C&oacute;digo</label><input class=\"input-group text-center\" type=\"text\" name=\"idVenda\" size=\"4\" autofocus></div>\n" +
             "            <div class=\"checkbox span5\"><label>Quantidade</label><input class=\"input-group\" type=\"text\" name=\"quantidadeVenda\" size=\"5\"></div>\n" +
-            "            <div class=\"checkbox span6\"><label>Produto</label><input class=\"input-group\" type=\"text\" name=\"nomeProduto\" size=\"9\"></div>\n" +
+            "            <div class=\"checkbox span6\"><label>Produto</label><input class=\"input-group\" type=\"text\" name=\"nomeProduto\" size=\"30\"></div>\n" +
             "            <div class=\"checkbox span7\"><label>Valor</label><input class=\"input-group\" type=\"tel\" name=\"valorProduto\" size=\"5\"></div>\n" +
+            "            <div class=\"checkbox span7\"><label>ID Cliente</label><input class=\"input-group\" type=\"tel\" name=\"idCliente\" size=\"5\"></div>\n" +
             "            <div class=\"checkbox span3\">\n" +
             "                <input class=\"btn-group btn-success\" name=\"action\" type=\"submit\" value=\"Salvar\">\n" +
             "                <input class=\"btn-group btn-danger\" name=\"action\" type=\"submit\" value=\"Deletar\">\n" +
@@ -47,9 +52,26 @@ public class VendaHtmlUtil {
             "<th>Produto</th>" +
             "<th>Valor(un)</th>" +
             "<th>Total</th>" +
+            "<th>Cliente</th>" +
+            "<th>Email</th>" +
+            "<th>CEP</th>" +
+            "<th>Endere&ccedil;o</th>" +
             "</tr>";
 
     private final String htmlTableFooter = "</table></div></form>";
+
+    public String getHtmlTableRowsWithCliente(Venda venda) {
+        return "<tr><td>" + venda.getId() +
+                "</td><td>" + venda.getQuantidade() +
+                "</td><td>" + venda.getNome() +
+                "</td><td>R$" + venda.getValor() +
+                "</td><td>R$" + venda.getValorTotal() +
+                "</td><td>" + venda.getCliente().getNome() +
+                "</td><td>" + venda.getCliente().getEmail() +
+                "</td><td>" + venda.getCliente().getEndereco().getCep() +
+                "</td><td>" + venda.getCliente().getEndereco().getRua() +
+                "</td></tr>";
+    }
 
     public String getHtmlTableRows(Venda venda) {
         return "<tr><td>" + venda.getId() +
@@ -57,11 +79,19 @@ public class VendaHtmlUtil {
                 "</td><td>" + venda.getNome() +
                 "</td><td>R$" + venda.getValor() +
                 "</td><td>R$" + venda.getValorTotal() +
+                "</td><td>Null" +
+                "</td><td>Null" +
+                "</td><td>Null" +
+                "</td><td>Null" +
                 "</td></tr>";
     }
 
     public String getHtmlTableEmptyRows() {
         return "<tr><td>Null" +
+                "</td><td>Null" +
+                "</td><td>Null" +
+                "</td><td>Null" +
+                "</td><td>Null" +
                 "</td><td>Null" +
                 "</td><td>Null" +
                 "</td><td>Null" +

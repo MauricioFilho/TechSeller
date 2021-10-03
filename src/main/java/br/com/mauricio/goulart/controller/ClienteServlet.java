@@ -59,7 +59,7 @@ public class ClienteServlet extends HttpServlet {
                 doGet(req, resp);
                 break;
             case "Vendas":
-                resp.sendRedirect("/cadastro-vendas");
+                resp.sendRedirect( req.getContextPath() + "/cadastro-vendas");
         }
     }
 }

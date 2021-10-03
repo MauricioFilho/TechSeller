@@ -23,8 +23,11 @@ public class ClienteHtmlUtil {
     private final String htmlFooter = "</body></html>";
 
     private final String htmlCadastroForm = "<form class=\"form-horizontal\" action=\"cadastro-cliente\" method=\"post\">\n" +
-            "        <div class=\"page-header\">\n" +
-            "            <h1>Cadastro Cliente</h1>\n" +
+            "        <div class=\"page-header\" align=\"center\">\n" +
+            "            <img src=\"../resources/img/logo.png\">\n" +
+            "           <div align=\"left\">\n" +
+            "               <h1>Cadastro Clientes</h1>\n" +
+            "           </div>\n" +
             "        </div>\n" +
             "        <div class=\"col-xs-3\">\n" +
             "            <div class=\"checkbox span3\"><label>C&oacute;digo</label><input class=\"input-group text-center\" type=\"text\" name=\"idCliente\" size=\"4\" autofocus></div>\n" +
