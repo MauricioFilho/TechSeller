@@ -14,7 +14,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @WebServlet(name = "ListagemServlet", urlPatterns = {"/listagem"})
 public class ListagemServlet extends HttpServlet {
@@ -29,14 +31,14 @@ public class ListagemServlet extends HttpServlet {
         resp.setContentType("text/html");
         HttpSession session = req.getSession(true);
 
-        List<Cliente> clientes = (List<Cliente>) session.getAttribute("clientes");
-        List<Venda> vendas = (List<Venda>) session.getAttribute("vendas");
+        List<Cliente> clientes = Optional.ofNullable((List<Cliente>) session.getAttribute("clientes")).orElse(new ArrayList<>());
+        List<Venda> vendas = Optional.ofNullable((List<Venda>) session.getAttribute("vendas")).orElse(new ArrayList<>());
 
         writer.println(listagemHtmlUtil.getHtmlHeader());
         writer.println(listagemHtmlUtil.getHtmlForm());
         writer.println(clienteHtmlUtil.getHtmlTableColumn());
         //Clientes table
-        if (clientes != null) {
+        if (!clientes.isEmpty()) {
             clientes.forEach(cliente -> writer.println(clienteHtmlUtil.getHtmlTableRows(cliente)));
         } else {
             writer.println(clienteHtmlUtil.getHtmlTableEmptyRows());
@@ -44,7 +46,7 @@ public class ListagemServlet extends HttpServlet {
 
         //Vendas table
         writer.println(vendaHtmlUtil.getHtmlTableColumn());
-        if (vendas != null) {
+        if (!vendas.isEmpty()) {
             vendas.forEach(venda -> writer.println(vendaHtmlUtil.getHtmlTableRowsWithCliente(venda)));
         } else {
             writer.println(vendaHtmlUtil.getHtmlTableEmptyRows());

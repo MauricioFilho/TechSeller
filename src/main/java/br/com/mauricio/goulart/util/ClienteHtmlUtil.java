@@ -61,6 +61,9 @@ public class ClienteHtmlUtil {
             "<th>Email</th>" +
             "<th>CEP</th>" +
             "<th>Endere&ccedil;o</th>" +
+            "<th>Bairro</th>" +
+            "<th>Cidade</th>" +
+            "<th>Pais</th>" +
             "</tr>";
 
 
@@ -74,17 +77,23 @@ public class ClienteHtmlUtil {
                 "</td><td>" + cliente.getEmail() +
                 "</td><td>" + cliente.getEndereco().getCep() +
                 "</td><td>" + cliente.getEndereco().getRua() +
+                "</td><td>" + cliente.getEndereco().getBairro() +
+                "</td><td>" + cliente.getEndereco().getCidade() +
+                "</td><td>" + cliente.getEndereco().getPais() +
                 "</td></tr>";
     }
 
     public String getHtmlTableEmptyRows() {
-        return "<tr><td>Null" +
-                "</td><td>Null" +
-                "</td><td>Null" +
-                "</td><td>Null" +
-                "</td><td>Null" +
-                "</td><td>Null" +
-                "</td><td>Null" +
+        return "<tr><td>----" +
+                "</td><td>----" +
+                "</td><td>----" +
+                "</td><td>----" +
+                "</td><td>----" +
+                "</td><td>----" +
+                "</td><td>----" +
+                "</td><td>----" +
+                "</td><td>----" +
+                "</td><td>----" +
                 "</td></tr>";
     }
 }

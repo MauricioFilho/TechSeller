@@ -9,13 +9,13 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Venda {
-    private int id;
-    private int quantidade;
+    private String id;
+    private String quantidade;
     private String nome;
-    private Float valor;
+    private String valor;
     private Cliente cliente;
 
     public float getValorTotal() {
-        return valor * quantidade;
+        return Float.parseFloat(valor) * Integer.parseInt(quantidade);
     }
 }

@@ -4,6 +4,7 @@ import br.com.mauricio.goulart.model.Cliente;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class ClienteService {
@@ -18,14 +19,21 @@ public class ClienteService {
             Cliente clienteAlteracao = criarCliente(request);
             return update(clientes, clienteAlteracao, clienteAlterado);
         } else {
-            clientes.add(criarCliente(request));
+            Cliente cliente = criarCliente(request);
+            if (!cliente.getId().isEmpty()) {
+                clientes.add(cliente);
+            }
         }
         return clientes;
     }
 
-    public List<Cliente> deletar(HttpServletRequest request, List<Cliente> clientes) {
-        int id = Integer.parseInt(request.getParameter("idCliente"));
-        return clientes.stream().filter(c -> c.getId() != id).collect(Collectors.toList());
+    public List<Cliente> deletar(HttpServletRequest req, List<Cliente> clientes) {
+        String id =  Optional.of(req.getParameter("idCliente")).orElse("");
+        if (!id.isEmpty()) {
+            return clientes.stream().filter(c -> !c.getId().equals(id)).collect(Collectors.toList());
+        } else {
+            return clientes;
+        }
     }
 
     private List<Cliente> update(List<Cliente> clientes, Cliente clienteAlteracao, Cliente clienteAlterado){
@@ -36,19 +44,18 @@ public class ClienteService {
         return clientes;
     }
 
-
-    public Cliente findCliente(List<Cliente> clientes, HttpServletRequest request) {
-        int id = Integer.parseInt(request.getParameter("idCliente"));
-        return clientes.stream().filter(c -> c.getId() ==  id).findAny().orElse(null);
+    public Cliente findCliente(List<Cliente> clientes, HttpServletRequest req) {
+        String id =  Optional.of(req.getParameter("idCliente")).orElse(null);
+        return clientes.stream().filter(c -> c.getId().equals(id)).findAny().orElse(null);
     }
 
-    private Cliente criarCliente(HttpServletRequest request) {
+    private Cliente criarCliente(HttpServletRequest req) {
         return new Cliente(
-                Integer.parseInt(request.getParameter("idCliente")),
-                request.getParameter("nomeCliente"),
-                request.getParameter("cpfCliente"),
-                request.getParameter("telefoneCliente"),
-                request.getParameter("emailCliente"),
-                enderecoService.criarEndereco(request));
+                Optional.of(req.getParameter("idCliente")).orElse(null),
+                Optional.of(req.getParameter("nomeCliente")).orElse(null),
+                Optional.of(req.getParameter("cpfCliente")).orElse(null),
+                Optional.of(req.getParameter("telefoneCliente")).orElse(null),
+                Optional.of(req.getParameter("emailCliente")).orElse(null),
+                Optional.of(enderecoService.criarEndereco(req)).orElse(null));
     }
 }

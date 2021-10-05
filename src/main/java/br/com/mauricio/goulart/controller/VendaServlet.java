@@ -14,8 +14,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @NoArgsConstructor
 @WebServlet(name = "VendaServlet", urlPatterns = {"/cadastro-vendas"})
@@ -49,7 +51,7 @@ public class VendaServlet extends HttpServlet {
 
         switch (action) {
             case "Salvar":
-                List<Cliente> clientes = (List<Cliente>) session.getAttribute("clientes");
+                List<Cliente> clientes = Optional.ofNullable((List<Cliente>) session.getAttribute("clientes")).orElse(new ArrayList<>());
                 Cliente cliente = clienteService.findCliente(clientes, req);
                 vendas = vendaService.salvar(req, vendas, cliente);
                 session.setAttribute("vendas", vendas);

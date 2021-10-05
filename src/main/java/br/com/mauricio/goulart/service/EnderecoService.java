@@ -3,15 +3,16 @@ package br.com.mauricio.goulart.service;
 import br.com.mauricio.goulart.model.Endereco;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Optional;
 
 public class EnderecoService {
 
-    public Endereco criarEndereco(HttpServletRequest request) {
+    public Endereco criarEndereco(HttpServletRequest req) {
         return new Endereco(
-                request.getParameter("ruaCliente"),
-                request.getParameter("cepCliente"),
-                request.getParameter("bairroCliente"),
-                request.getParameter("cidadeCliente"),
-                request.getParameter("paisCliente"));
+                Optional.of(req.getParameter("ruaCliente")).orElse(null),
+                Optional.of(req.getParameter("cepCliente")).orElse(null),
+                Optional.of(req.getParameter("bairroCliente")).orElse(null),
+                Optional.of(req.getParameter("cidadeCliente")).orElse(null),
+                Optional.of(req.getParameter("paisCliente")).orElse(null));
     }
 }

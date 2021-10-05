@@ -74,29 +74,16 @@ public class VendaHtmlUtil {
                 "</td></tr>";
     }
 
-    public String getHtmlTableRows(Venda venda) {
-        return "<tr><td>" + venda.getId() +
-                "</td><td>" + venda.getQuantidade() +
-                "</td><td>" + venda.getNome() +
-                "</td><td>R$" + venda.getValor() +
-                "</td><td>R$" + venda.getValorTotal() +
-                "</td><td>Null" +
-                "</td><td>Null" +
-                "</td><td>Null" +
-                "</td><td>Null" +
-                "</td></tr>";
-    }
-
     public String getHtmlTableEmptyRows() {
-        return "<tr><td>Null" +
-                "</td><td>Null" +
-                "</td><td>Null" +
-                "</td><td>Null" +
-                "</td><td>Null" +
-                "</td><td>Null" +
-                "</td><td>Null" +
-                "</td><td>Null" +
-                "</td><td>Null" +
+        return "<tr><td>----" +
+                "</td><td>----" +
+                "</td><td>----" +
+                "</td><td>----" +
+                "</td><td>----" +
+                "</td><td>----" +
+                "</td><td>----" +
+                "</td><td>----" +
+                "</td><td>----" +
                 "</td></tr>";
     }
 }
