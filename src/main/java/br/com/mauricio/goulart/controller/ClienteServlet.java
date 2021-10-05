@@ -20,14 +20,13 @@ import java.util.List;
 public class ClienteServlet extends HttpServlet {
     private final ClienteService clienteService = new ClienteService();
     private final ClienteHtmlUtil clienteHtmlUtil = new ClienteHtmlUtil();
-    private List<Cliente> clientes = new ArrayList<>();
 
+    private List<Cliente> clientes = new ArrayList<>();
 
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         PrintWriter writer = resp.getWriter();
         resp.setContentType("text/html");
 
-        //gera o conteudo html
         writer.println(clienteHtmlUtil.getHtmlHeader());
         writer.println(clienteHtmlUtil.getHtmlCadastroForm());
         writer.println(clienteHtmlUtil.getHtmlTableColumn());
@@ -44,7 +43,6 @@ public class ClienteServlet extends HttpServlet {
         String action = req.getParameter("action");
         HttpSession session = req.getSession();
 
-        //ações da tela
         switch (action) {
             case "Salvar":
                 clientes = clienteService.salvar(req, clientes);

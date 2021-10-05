@@ -45,7 +45,7 @@ public class VendaService {
         return vendas;
     }
 
-    public Venda findVenda(List<Venda> vendas, HttpServletRequest req) {
+    private Venda findVenda(List<Venda> vendas, HttpServletRequest req) {
         String id =  Optional.of(req.getParameter("idVenda")).orElse(null);
         return vendas.stream().filter(v -> v.getId().equals(id)).findAny().orElse(null);
     }

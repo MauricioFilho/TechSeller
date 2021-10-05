@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -25,6 +24,7 @@ public class VendaServlet extends HttpServlet {
     VendaService vendaService = new VendaService();
     VendaHtmlUtil vendaHtmlUtil = new VendaHtmlUtil();
     ClienteService clienteService = new ClienteService();
+
     private List<Venda> vendas = new ArrayList<>();
 
     @Override

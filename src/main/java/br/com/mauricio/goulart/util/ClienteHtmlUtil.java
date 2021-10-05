@@ -66,7 +66,6 @@ public class ClienteHtmlUtil {
             "<th>Pais</th>" +
             "</tr>";
 
-
     private final String htmlTableFooter = "</table></div></form>";
 
     public String getHtmlTableRows(Cliente cliente) {

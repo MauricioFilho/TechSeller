@@ -1,6 +1,5 @@
 package br.com.mauricio.goulart.util;
 
-import br.com.mauricio.goulart.model.Cliente;
 import br.com.mauricio.goulart.model.Venda;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
