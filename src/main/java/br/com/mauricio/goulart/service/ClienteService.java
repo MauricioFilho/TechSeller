@@ -1,16 +1,40 @@
 package br.com.mauricio.goulart.service;
 
-import br.com.mauricio.goulart.model.Cliente;
+import br.com.mauricio.goulart.resources.Constantes;
+import com.mysql.cj.jdbc.Driver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 public class ClienteService {
+
     private final EnderecoService enderecoService = new EnderecoService();
 
-    public List<Cliente> salvar(HttpServletRequest request, List<Cliente> clientes) {
+    private static final Logger log = LoggerFactory.getLogger(ClienteService.class);
+
+    private final Connection connection = getConexao();
+
+    public Connection getConexao() {
+        try {
+            DriverManager.registerDriver(new Driver());
+            return DriverManager.getConnection(Constantes.URL,
+                    Constantes.USUARIO,
+                    Constantes.SENHA);
+        } catch (SQLException e) {
+            log.error("Erro ao connectar com o banco de dados -> (" + e.getMessage() + ")");
+            return null;
+        }
+    }
+
+
+}
+    // CODIGO ANTIGO
+    /*public List<Cliente> salvar(HttpServletRequest request, List<Cliente> clientes) {
+
+
         Cliente clienteAlterado = null;
         if(!clientes.isEmpty()) {
             clienteAlterado = findCliente(clientes, request);
@@ -58,4 +82,4 @@ public class ClienteService {
                 Optional.of(req.getParameter("emailCliente")).orElse(null),
                 Optional.of(enderecoService.criarEndereco(req)).orElse(null));
     }
-}
+}*/

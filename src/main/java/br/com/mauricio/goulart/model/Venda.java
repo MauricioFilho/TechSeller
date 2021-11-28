@@ -2,6 +2,8 @@ package br.com.mauricio.goulart.model;
 
 import lombok.*;
 
+import java.math.BigDecimal;
+
 @Getter
 @Setter
 @ToString
@@ -9,13 +11,13 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Venda {
-    private String id;
-    private String quantidade;
-    private String nome;
-    private String valor;
+    private int id;
+    private int quantidade;
+    private String nomeProduto;
+    private BigDecimal valor;
     private Cliente cliente;
 
     public float getValorTotal() {
-        return Float.parseFloat(valor) * Integer.parseInt(quantidade);
+        return valor.floatValue() * quantidade;
     }
 }

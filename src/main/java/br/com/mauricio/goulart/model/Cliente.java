@@ -9,7 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Cliente {
-    private String id;
+    private int id;
     private String nome;
     private String cpf;
     private String telefone;

@@ -24,42 +24,13 @@ public class ClienteServlet extends HttpServlet {
     private List<Cliente> clientes = new ArrayList<>();
 
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        PrintWriter writer = resp.getWriter();
         resp.setContentType("text/html");
 
-        writer.println(clienteHtmlUtil.getHtmlHeader());
-        writer.println(clienteHtmlUtil.getHtmlCadastroForm());
-        writer.println(clienteHtmlUtil.getHtmlTableColumn());
-        if (!clientes.isEmpty()) {
-            clientes.forEach(cliente -> writer.println(clienteHtmlUtil.getHtmlTableRows(cliente)));
-        } else {
-            writer.println(clienteHtmlUtil.getHtmlTableEmptyRows());
-        }
-        writer.println(clienteHtmlUtil.getHtmlTableFooter());
-        writer.println(clienteHtmlUtil.getHtmlFooter());
     }
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String action = req.getParameter("action");
         HttpSession session = req.getSession();
 
-        switch (action) {
-            case "Salvar":
-                clientes = clienteService.salvar(req, clientes);
-                session.setAttribute("clientes", clientes);
-                doGet(req, resp);
-                break;
-            case "Deletar":
-                clientes = clienteService.deletar(req, clientes);
-                session.setAttribute("clientes", clientes);
-                doGet(req, resp);
-                break;
-            case "Vendas":
-                resp.sendRedirect( req.getContextPath() + "/cadastro-vendas");
-                break;
-            case "Listagem":
-                resp.sendRedirect(req.getContextPath() + "/listagem");
-                break;
-        }
     }
 }
