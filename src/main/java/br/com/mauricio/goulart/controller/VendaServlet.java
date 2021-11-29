@@ -32,7 +32,7 @@ public class VendaServlet extends HttpServlet {
         PrintWriter writer = resp.getWriter();
         resp.setContentType("text/html");
 
-        writer.println(vendaHtmlUtil.getHtmlHeader());
+        /*writer.println(vendaHtmlUtil.getHtmlHeader());
         writer.println(vendaHtmlUtil.getHtmlCadastroForm());
         writer.println(vendaHtmlUtil.getHtmlTableColumn());
         if (!vendas.isEmpty()) {
@@ -41,7 +41,7 @@ public class VendaServlet extends HttpServlet {
             writer.println(vendaHtmlUtil.getHtmlTableEmptyRows());
         }
         writer.println(vendaHtmlUtil.getHtmlTableFooter());
-        writer.println(vendaHtmlUtil.getHtmlFooter());
+        writer.println(vendaHtmlUtil.getHtmlFooter());*/
     }
 
     @Override
@@ -49,7 +49,7 @@ public class VendaServlet extends HttpServlet {
         String action = req.getParameter("action");
         HttpSession session = req.getSession(true);
 
-        switch (action) {
+       /* switch (action) {
             case "Salvar":
                 List<Cliente> clientes = Optional.ofNullable((List<Cliente>) session.getAttribute("clientes")).orElse(new ArrayList<>());
                 Cliente cliente = clienteService.findCliente(clientes, req);
@@ -68,6 +68,6 @@ public class VendaServlet extends HttpServlet {
             case "Listagem":
                 resp.sendRedirect(req.getContextPath() + "/listagem");
                 break;
-        }
+        }*/
     }
 }

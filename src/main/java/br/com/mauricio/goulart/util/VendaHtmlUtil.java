@@ -60,7 +60,7 @@ public class VendaHtmlUtil {
 
     private final String htmlTableFooter = "</table></div></form>";
 
-    public String getHtmlTableRowsWithCliente(Venda venda) {
+   /* public String getHtmlTableRowsWithCliente(Venda venda) {
         return "<tr><td>" + venda.getId() +
                 "</td><td>" + venda.getQuantidade() +
                 "</td><td>" + venda.getNome() +
@@ -71,7 +71,7 @@ public class VendaHtmlUtil {
                 "</td><td>" + venda.getCliente().getEndereco().getCep() +
                 "</td><td>" + venda.getCliente().getEndereco().getRua() +
                 "</td></tr>";
-    }
+    }*/
 
     public String getHtmlTableEmptyRows() {
         return "<tr><td>----" +

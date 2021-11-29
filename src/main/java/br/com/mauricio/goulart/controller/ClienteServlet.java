@@ -19,7 +19,6 @@ import java.util.List;
 @WebServlet(name = "ClienteServlet", urlPatterns = {"/cadastro-cliente"})
 public class ClienteServlet extends HttpServlet {
     private final ClienteService clienteService = new ClienteService();
-    private final ClienteHtmlUtil clienteHtmlUtil = new ClienteHtmlUtil();
 
     private List<Cliente> clientes = new ArrayList<>();
 

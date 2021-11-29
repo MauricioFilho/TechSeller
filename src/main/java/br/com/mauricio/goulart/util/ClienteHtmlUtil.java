@@ -68,7 +68,7 @@ public class ClienteHtmlUtil {
 
     private final String htmlTableFooter = "</table></div></form>";
 
-    public String getHtmlTableRows(Cliente cliente) {
+    /*public String getHtmlTableRows(Cliente cliente) {
         return "<tr><td>" + cliente.getId() +
                 "</td><td>" + cliente.getNome() +
                 "</td><td>" + cliente.getCpf() +
@@ -80,7 +80,7 @@ public class ClienteHtmlUtil {
                 "</td><td>" + cliente.getEndereco().getCidade() +
                 "</td><td>" + cliente.getEndereco().getPais() +
                 "</td></tr>";
-    }
+    }*/
 
     public String getHtmlTableEmptyRows() {
         return "<tr><td>----" +

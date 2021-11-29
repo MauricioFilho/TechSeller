@@ -11,8 +11,7 @@ import lombok.*;
 public class Cliente {
     private int id;
     private String nome;
-    private String cpf;
+    private String cpfCnpj;
     private String telefone;
     private String email;
-    private Endereco endereco;
 }

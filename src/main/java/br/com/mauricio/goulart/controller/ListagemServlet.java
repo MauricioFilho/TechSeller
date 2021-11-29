@@ -37,35 +37,35 @@ public class ListagemServlet extends HttpServlet {
         writer.println(listagemHtmlUtil.getHtmlHeader());
         writer.println(listagemHtmlUtil.getHtmlForm());
         writer.println(clienteHtmlUtil.getHtmlTableColumn());
-        //Clientes table
+        /*//Clientes table
         if (!clientes.isEmpty()) {
             clientes.forEach(cliente -> writer.println(clienteHtmlUtil.getHtmlTableRows(cliente)));
         } else {
             writer.println(clienteHtmlUtil.getHtmlTableEmptyRows());
-        }
+        }*/
 
         //Vendas table
-        writer.println(vendaHtmlUtil.getHtmlTableColumn());
+      /*  writer.println(vendaHtmlUtil.getHtmlTableColumn());
         if (!vendas.isEmpty()) {
             vendas.forEach(venda -> writer.println(vendaHtmlUtil.getHtmlTableRowsWithCliente(venda)));
         } else {
             writer.println(vendaHtmlUtil.getHtmlTableEmptyRows());
         }
         writer.println(vendaHtmlUtil.getHtmlTableFooter());
-        writer.println(listagemHtmlUtil.getHtmlFooter());
+        writer.println(listagemHtmlUtil.getHtmlFooter());*/
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String action = req.getParameter("action");
 
-        switch (action) {
+       /* switch (action) {
             case "Clientes":
                 resp.sendRedirect(req.getContextPath() + "/cadastro-cliente");
                 break;
             case "Vendas":
                 resp.sendRedirect(req.getContextPath() + "/cadastro-vendas");
                 break;
-        }
+        }*/
     }
 }

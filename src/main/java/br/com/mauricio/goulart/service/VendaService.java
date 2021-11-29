@@ -2,60 +2,96 @@ package br.com.mauricio.goulart.service;
 
 import br.com.mauricio.goulart.model.Cliente;
 import br.com.mauricio.goulart.model.Venda;
+import br.com.mauricio.goulart.resources.Constantes;
+import com.mysql.cj.jdbc.Driver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import javax.servlet.http.HttpServletRequest;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class VendaService {
-    public List<Venda> salvar(HttpServletRequest req, List<Venda> vendas, Cliente cliente) {
-        Venda vendaAlterada = null;
-        if (!vendas.isEmpty()) {
-            vendaAlterada = findVenda(vendas, req);
+
+    private static final Logger log = LoggerFactory.getLogger(VendaService.class);
+
+    private Connection connection = null;
+
+    public void save() {
+        try {
+            connection = this.makeConnection();
+            PreparedStatement stmt = connection.prepareStatement(Constantes.INSERT_VENDA);
+            stmt.setString(1, "10");
+            stmt.setString(2, "Mouse");
+            stmt.setString(3, "150");
+            stmt.execute();
+            stmt.close();
+        } catch (SQLException ex) {
+            log.error("Erro ao salvar/criar venda -> " + ex.getMessage());
+        } finally {
+            closeConnection();
         }
-        if (vendaAlterada != null) {
-            Venda vendaAlteracao = criarVenda(req, cliente);
-            return update(vendas, vendaAlteracao, vendaAlterada);
-        } else {
-            Venda novaVenda = null;
-            if (cliente != null) {
-                novaVenda = criarVenda(req, cliente);
+    }
+
+    public void deleteById (int id) {
+        try {
+            connection = makeConnection();
+            PreparedStatement stmt = connection.prepareStatement(Constantes.DELETE_VENDA);
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            log.error("Erro ao deletar venda -> " + e.getMessage());
+        } finally {
+            closeConnection();
+        }
+    }
+
+    public List<Venda> findAll() {
+        try {
+            connection = this.makeConnection();
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(Constantes.SELECT_VENDAS);
+
+            List<Venda> vendas = new ArrayList<>();
+            while (resultSet.next()) {
+                Venda venda = create(resultSet);
+                vendas.add(venda);
             }
-            if (novaVenda != null) {
-                vendas.add(novaVenda);
+            return vendas;
+        } catch (SQLException ex) {
+            log.error("Erro ao encontrar clientes -> " + ex.getMessage());
+            return null;
+        } finally {
+            closeConnection();
+        }
+    }
+
+    public Connection makeConnection() {
+        try {
+            DriverManager.registerDriver(new Driver());
+            return DriverManager.getConnection(Constantes.URL,
+                    Constantes.USUARIO,
+                    Constantes.SENHA);
+        } catch (SQLException e) {
+            log.error("Erro ao connectar com o banco de dados -> (" + e.getMessage() + ")");
+            return null;
+        }
+    }
+
+    public void closeConnection() {
+        if (connection != null) {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                log.error("Erro ao fechar conexao com o banco -> " + e.getMessage());
             }
         }
-        return vendas;
     }
 
-    public List<Venda> deletar(HttpServletRequest req, List<Venda> vendas) {
-        String id =  Optional.of(req.getParameter("idVenda")).orElse(null);
-        if (!id.isEmpty()) {
-            return vendas.stream().filter(v -> !v.getId().equals(id)).collect(Collectors.toList());
-        }
-        return vendas;
-    }
-
-    private List<Venda> update(List<Venda> vendas, Venda vendaAlteracao, Venda vendaAlterada){
-        int vendaIndex = vendas.indexOf(vendaAlterada);
-        if (vendaIndex != -1) {
-            vendas.set(vendaIndex, vendaAlteracao);
-        }
-        return vendas;
-    }
-
-    private Venda findVenda(List<Venda> vendas, HttpServletRequest req) {
-        String id =  Optional.of(req.getParameter("idVenda")).orElse(null);
-        return vendas.stream().filter(v -> v.getId().equals(id)).findAny().orElse(null);
-    }
-
-    private Venda criarVenda(HttpServletRequest req, Cliente cliente) {
-        return new Venda(
-                Optional.of(req.getParameter("idVenda")).orElse(null),
-                Optional.of(req.getParameter("quantidadeVenda")).orElse(null),
-                Optional.of(req.getParameter("nomeProduto")).orElse(null),
-                Optional.of(req.getParameter("valorProduto")).orElse(null),
-                Optional.of(cliente).orElse(null));
+    public Venda create(ResultSet resultSet) throws SQLException {
+        return new Venda(resultSet.getInt("id"),
+                resultSet.getInt("quantidade"),
+                resultSet.getString("nome_produto"),
+                resultSet.getBigDecimal("valor"));
     }
 }
