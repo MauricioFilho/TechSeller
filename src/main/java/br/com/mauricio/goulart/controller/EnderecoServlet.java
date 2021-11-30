@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 
 @WebServlet(name = "EnderecoServlet", urlPatterns = {"/cadastro-endereco"})
@@ -43,7 +42,7 @@ public class EnderecoServlet extends HttpServlet {
                 doGet(req,resp);
                 break;
             case "Deletar":
-                enderecoService.deleteByCep(req);
+                enderecoService.deleteById(req);
                 doGet(req,resp);
                 break;
         }

@@ -40,7 +40,7 @@ public class ClienteServlet extends HttpServlet {
                 doGet(req,resp);
                 break;
             case "Deletar":
-                clienteService.deleteByCpfCnpj(req);
+                clienteService.deleteById(req);
                 doGet(req,resp);
                 break;
             case "Vendas":

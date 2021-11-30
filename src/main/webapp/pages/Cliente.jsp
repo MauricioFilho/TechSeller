@@ -15,16 +15,15 @@
     <form action="cadastro-cliente" method="post">
         <div class="page-header checkbox">
             <h1>Cadastro Cliente</h1>
-            <h5 style="color: red">Para deletar: Informe o cpf ou cnpj que deseja deletar e clique em "Deletar"</h5>
         </div>
         <div class="col-xs-3 checkbox">
+            <div class="checkbox"><label>ID</label><input class="input-group" type="text" name="id" size="5"></div>
             <div class="checkbox"><label>Nome</label><input class="input-group" type="text" name="nome" size="35"></div>
             <div class="checkbox"><label>CPF</label><input class="input-group" type="text" name="cpfCnpj" size="9"></div>
             <div class="checkbox"><label>Telefone</label><input class="input-group" type="tel" name="telefone" size="13"></div>
             <div class="checkbox"><label>Email</label><input class="input-group" type="text" name="email" size="35" ></div>
             <input class="btn-group btn-success " name="action" type="submit" value="Salvar">
-            <input class="btn-group btn-danger" name="action" type="submit" value="Deletar">
-            <input class="btn-group btn-info" name="action" type="submit" value="Alterar">
+            <input class="btn-group btn-danger" name="action" type="submit"  value="Deletar">
             <%
                 if(request.getAttribute("errorMessage") != null) {
                     out.print("<div class=checkbox> Erro ao inserir cliente -> " + request.getAttribute("errorMessage") + "</div>");

@@ -19,18 +19,22 @@ public class ClienteService {
 
     public boolean save(HttpServletRequest req) {
         List<Cliente> clienteList = findAll();
+        String id = req.getParameter("id");
+
+        if (!id.isEmpty()) {
+            update(req, id);
+            return true;
+        }
+
         if(clienteList.stream().anyMatch(c -> c.getCpfCnpj().equals(req.getParameter("cpfCnpj")))){
             log.warn("Aviso ao salvar/cliente -> Cliente com CpfCnpj: " + req.getParameter("cpfCnpj") + " ja se encontra na base!");
             return false;
         }
 
         try {
-            connection = this.makeConnection();
+            connection = this.doConnection();
             PreparedStatement stmt = connection.prepareStatement(Constantes.INSERT_CLIENTE);
-            stmt.setString(1, req.getParameter("nome"));
-            stmt.setString(2, req.getParameter("cpfCnpj"));
-            stmt.setString(3, req.getParameter("telefone"));
-            stmt.setString(4, req.getParameter("email"));
+            populateStatement(stmt, req, "");
             stmt.execute();
             stmt.close();
             return true;
@@ -42,12 +46,27 @@ public class ClienteService {
         }
     }
 
-    public void deleteByCpfCnpj(HttpServletRequest req) {
+    private void update(HttpServletRequest req, String id) {
         try {
-            connection = makeConnection();
-            PreparedStatement stmt = connection.prepareStatement(Constantes.DELETE_CLIENTE);
-            stmt.setString(1, req.getParameter("cpfCnpj"));
+            connection = this.doConnection();
+            PreparedStatement stmt = connection.prepareStatement(Constantes.ALTER_CLIENTE);
+            populateStatement(stmt, req, id);
             stmt.executeUpdate();
+            stmt.close();
+        } catch (SQLException ex) {
+            log.error("Erro ao alterar cliente -> " + ex.getMessage());
+        } finally {
+            closeConnection();
+        }
+    }
+
+    public void deleteById(HttpServletRequest req) {
+        try {
+            connection = this.doConnection();
+            PreparedStatement stmt = connection.prepareStatement(Constantes.DELETE_CLIENTE);
+            stmt.setString(1, req.getParameter("id"));
+            stmt.executeUpdate();
+            stmt.close();
         } catch (SQLException e) {
             log.error("Erro ao deletar cliente -> " + e.getMessage());
         } finally {
@@ -60,7 +79,7 @@ public class ClienteService {
         ResultSet resultSet;
         List<Cliente> clientes = new ArrayList<>();
         try {
-            connection = this.makeConnection();
+            connection = this.doConnection();
             statement = connection.createStatement();
             resultSet = statement.executeQuery(Constantes.SELECT_CLIENTES);
 
@@ -77,7 +96,25 @@ public class ClienteService {
         }
     }
 
-    public Connection makeConnection() {
+    public void populateStatement(PreparedStatement stmt, HttpServletRequest req, String id) throws SQLException {
+        stmt.setString(1, req.getParameter("nome"));
+        stmt.setString(2, req.getParameter("cpfCnpj"));
+        stmt.setString(3, req.getParameter("telefone"));
+        stmt.setString(4, req.getParameter("email"));
+        if (!id.isEmpty()) {
+            stmt.setInt(5, Integer.parseInt(id));
+        }
+    }
+
+    public Cliente create(ResultSet resultSet) throws SQLException {
+        return new Cliente(resultSet.getInt("id"),
+                resultSet.getString("nome"),
+                resultSet.getString("cpfCnpj"),
+                resultSet.getString("telefone"),
+                resultSet.getString("email"));
+    }
+
+    public Connection doConnection() {
         try {
             DriverManager.registerDriver(new Driver());
             return DriverManager.getConnection(Constantes.URL,
@@ -99,11 +136,5 @@ public class ClienteService {
         }
     }
 
-    public Cliente create(ResultSet resultSet) throws SQLException {
-        return new Cliente(resultSet.getInt("id"),
-                resultSet.getString("nome"),
-                resultSet.getString("cpfCnpj"),
-                resultSet.getString("telefone"),
-                resultSet.getString("email"));
-    }
+
 }

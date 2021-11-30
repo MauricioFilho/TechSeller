@@ -18,14 +18,16 @@ public class EnderecoService {
     private Connection connection = null;
 
     public boolean save (HttpServletRequest req) {
+        String id = req.getParameter("id");
+
+        if (!id.isEmpty()) {
+            update(req, id);
+            return true;
+        }
         try {
-            connection = this.makeConnection();
+            connection = this.doConnection();
             PreparedStatement stmt = connection.prepareStatement(Constantes.INSERT_ENDERECO);
-            stmt.setString(1, req.getParameter("rua"));
-            stmt.setString(2, req.getParameter("cep"));
-            stmt.setString(3, req.getParameter("bairro"));
-            stmt.setString(4, req.getParameter("cidade"));
-            stmt.setString(5, req.getParameter("pais"));
+            populateStatement(stmt, req, "");
             stmt.execute();
             stmt.close();
             return true;
@@ -37,11 +39,36 @@ public class EnderecoService {
         }
     }
 
-    public void deleteByCep (HttpServletRequest req) {
+    private void update(HttpServletRequest req, String id) {
         try {
-            connection = makeConnection();
+            connection = this.doConnection();
+            PreparedStatement stmt = connection.prepareStatement(Constantes.ALTER_ENDERECO);
+            populateStatement(stmt, req, id);
+            stmt.executeUpdate();
+            stmt.close();
+        } catch (SQLException ex) {
+            log.error("Erro ao alterar endereco -> " + ex.getMessage());
+        } finally {
+            closeConnection();
+        }
+    }
+
+    private void populateStatement(PreparedStatement stmt, HttpServletRequest req, String id) throws SQLException {
+        stmt.setString(1, req.getParameter("rua"));
+        stmt.setString(2, req.getParameter("cep"));
+        stmt.setString(3, req.getParameter("bairro"));
+        stmt.setString(4, req.getParameter("cidade"));
+        stmt.setString(5, req.getParameter("pais"));
+        if (!id.isEmpty()) {
+            stmt.setInt(6, Integer.parseInt(id));
+        }
+    }
+
+    public void deleteById(HttpServletRequest req) {
+        try {
+            connection = this.doConnection();
             PreparedStatement stmt = connection.prepareStatement(Constantes.DELETE_ENDERECO);
-            stmt.setString(1, req.getParameter("cep"));
+            stmt.setString(1, req.getParameter("id"));
             stmt.executeUpdate();
         } catch (SQLException e) {
             log.error("Erro ao deletar endereco -> " + e.getMessage());
@@ -55,7 +82,7 @@ public class EnderecoService {
         ResultSet resultSet;
         List<Endereco> enderecos = new ArrayList<>();
         try {
-            connection = this.makeConnection();
+            connection = this.doConnection();
             statement = connection.createStatement();
             resultSet = statement.executeQuery(Constantes.SELECT_ENDERECOS);
 
@@ -72,7 +99,16 @@ public class EnderecoService {
         }
     }
 
-    public Connection makeConnection() {
+    public Endereco create(ResultSet resultSet) throws SQLException {
+        return new Endereco(resultSet.getInt("id"),
+                resultSet.getString("rua"),
+                resultSet.getString("cep"),
+                resultSet.getString("bairro"),
+                resultSet.getString("cidade"),
+                resultSet.getString("pais"));
+    }
+
+    public Connection doConnection() {
         try {
             DriverManager.registerDriver(new Driver());
             return DriverManager.getConnection(Constantes.URL,
@@ -92,14 +128,5 @@ public class EnderecoService {
                 log.error("Erro ao fechar conexao com o banco -> " + e.getMessage());
             }
         }
-    }
-
-    public Endereco create(ResultSet resultSet) throws SQLException {
-        return new Endereco(resultSet.getInt("id"),
-                resultSet.getString("rua"),
-                resultSet.getString("cep"),
-                resultSet.getString("bairro"),
-                resultSet.getString("cidade"),
-                resultSet.getString("pais"));
     }
 }

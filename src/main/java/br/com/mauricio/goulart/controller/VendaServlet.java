@@ -2,7 +2,6 @@ package br.com.mauricio.goulart.controller;
 
 import br.com.mauricio.goulart.model.Venda;
 import br.com.mauricio.goulart.resources.Constantes;
-import br.com.mauricio.goulart.service.ClienteService;
 import br.com.mauricio.goulart.service.VendaService;
 import lombok.NoArgsConstructor;
 
@@ -12,10 +11,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.List;
 
 @NoArgsConstructor
@@ -47,7 +43,7 @@ public class VendaServlet extends HttpServlet {
                 doGet(req,resp);
                 break;
             case "Deletar":
-                vendaService.deleteByName(req);
+                vendaService.deleteById(req);
                 doGet(req,resp);
                 break;
         }
