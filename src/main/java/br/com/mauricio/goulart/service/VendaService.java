@@ -1,12 +1,12 @@
 package br.com.mauricio.goulart.service;
 
-import br.com.mauricio.goulart.model.Cliente;
 import br.com.mauricio.goulart.model.Venda;
 import br.com.mauricio.goulart.resources.Constantes;
 import com.mysql.cj.jdbc.Driver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.servlet.http.HttpServletRequest;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,27 +17,29 @@ public class VendaService {
 
     private Connection connection = null;
 
-    public void save() {
+    public boolean save (HttpServletRequest req) {
         try {
             connection = this.makeConnection();
             PreparedStatement stmt = connection.prepareStatement(Constantes.INSERT_VENDA);
-            stmt.setString(1, "10");
-            stmt.setString(2, "Mouse");
-            stmt.setString(3, "150");
+            stmt.setString(1, req.getParameter("quantidade"));
+            stmt.setString(2, req.getParameter("nome"));
+            stmt.setString(3, req.getParameter("valor"));
             stmt.execute();
             stmt.close();
+            return true;
         } catch (SQLException ex) {
             log.error("Erro ao salvar/criar venda -> " + ex.getMessage());
+            return false;
         } finally {
             closeConnection();
         }
     }
 
-    public void deleteById (int id) {
+    public void deleteByName (HttpServletRequest req) {
         try {
             connection = makeConnection();
             PreparedStatement stmt = connection.prepareStatement(Constantes.DELETE_VENDA);
-            stmt.setInt(1, id);
+            stmt.setString(1, req.getParameter("nome"));
             stmt.executeUpdate();
         } catch (SQLException e) {
             log.error("Erro ao deletar venda -> " + e.getMessage());
@@ -59,7 +61,7 @@ public class VendaService {
             }
             return vendas;
         } catch (SQLException ex) {
-            log.error("Erro ao encontrar clientes -> " + ex.getMessage());
+            log.error("Erro ao encontrar vendas -> " + ex.getMessage());
             return null;
         } finally {
             closeConnection();

@@ -1,10 +1,8 @@
 package br.com.mauricio.goulart.controller;
 
-import br.com.mauricio.goulart.model.Venda;
+import br.com.mauricio.goulart.model.Endereco;
 import br.com.mauricio.goulart.resources.Constantes;
-import br.com.mauricio.goulart.service.ClienteService;
-import br.com.mauricio.goulart.service.VendaService;
-import lombok.NoArgsConstructor;
+import br.com.mauricio.goulart.service.EnderecoService;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -12,26 +10,24 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.List;
 
-@NoArgsConstructor
-@WebServlet(name = "VendaServlet", urlPatterns = {"/cadastro-vendas"})
-public class VendaServlet extends HttpServlet {
-    VendaService vendaService = new VendaService();
+@WebServlet(name = "EnderecoServlet", urlPatterns = {"/cadastro-endereco"})
+public class EnderecoServlet extends HttpServlet {
+
+    EnderecoService enderecoService = new EnderecoService();
     RequestDispatcher rd;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         resp.setContentType("text/html");
 
-        List<Venda> vendas = vendaService.findAll();
-        req.setAttribute("vendasList", vendas);
+        List<Endereco> enderecoList = enderecoService.findAll();
+        req.setAttribute("enderecosList", enderecoList);
 
-        rd = req.getRequestDispatcher("pages/Venda.jsp");
+        rd = req.getRequestDispatcher("pages/Endereco.jsp");
         rd.forward(req, resp);
     }
 
@@ -41,13 +37,13 @@ public class VendaServlet extends HttpServlet {
 
         switch (action) {
             case "Salvar":
-                if (!vendaService.save(req)) {
+                if (!enderecoService.save(req)) {
                     req.setAttribute("errorMessage", Constantes.VENDA_ERROR_400);
                 }
                 doGet(req,resp);
                 break;
             case "Deletar":
-                vendaService.deleteByName(req);
+                enderecoService.deleteByCep(req);
                 doGet(req,resp);
                 break;
         }

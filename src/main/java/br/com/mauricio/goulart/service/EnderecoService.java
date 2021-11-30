@@ -7,6 +7,7 @@ import com.mysql.cj.jdbc.Driver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.servlet.http.HttpServletRequest;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,29 +18,31 @@ public class EnderecoService {
 
     private Connection connection = null;
 
-    public void save() {
+    public boolean save (HttpServletRequest req) {
         try {
             connection = this.makeConnection();
             PreparedStatement stmt = connection.prepareStatement(Constantes.INSERT_ENDERECO);
-            stmt.setString(1, "Teste");
-            stmt.setString(2, "88804080");
-            stmt.setString(3, "Santa Barbara");
-            stmt.setString(4, "Criciuma");
-            stmt.setString(5, "Brasil");
+            stmt.setString(1, req.getParameter("rua"));
+            stmt.setString(2, req.getParameter("cep"));
+            stmt.setString(3, req.getParameter("bairro"));
+            stmt.setString(4, req.getParameter("cidade"));
+            stmt.setString(5, req.getParameter("pais"));
             stmt.execute();
             stmt.close();
+            return true;
         } catch (SQLException ex) {
             log.error("Erro ao salvar/criar endereco -> " + ex.getMessage());
+            return false;
         } finally {
             closeConnection();
         }
     }
 
-    public void deleteById (int id) {
+    public void deleteByCep (HttpServletRequest req) {
         try {
             connection = makeConnection();
             PreparedStatement stmt = connection.prepareStatement(Constantes.DELETE_ENDERECO);
-            stmt.setInt(1, id);
+            stmt.setString(1, req.getParameter("cep"));
             stmt.executeUpdate();
         } catch (SQLException e) {
             log.error("Erro ao deletar endereco -> " + e.getMessage());

@@ -6,6 +6,7 @@ import com.mysql.cj.jdbc.Driver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.servlet.http.HttpServletRequest;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,28 +17,36 @@ public class ClienteService {
 
     private Connection connection = null;
 
-    public void save() {
+    public boolean save(HttpServletRequest req) {
+        List<Cliente> clienteList = findAll();
+        if(clienteList.stream().anyMatch(c -> c.getCpfCnpj().equals(req.getParameter("cpfCnpj")))){
+            log.warn("Aviso ao salvar/cliente -> Cliente com CpfCnpj: " + req.getParameter("cpfCnpj") + " ja se encontra na base!");
+            return false;
+        }
+
         try {
             connection = this.makeConnection();
             PreparedStatement stmt = connection.prepareStatement(Constantes.INSERT_CLIENTE);
-            stmt.setString(1, "Mauricio");
-            stmt.setString(2, "5555452645");
-            stmt.setString(3, "48998117006");
-            stmt.setString(4, "mauricio@jkkk.com.br");
+            stmt.setString(1, req.getParameter("nome"));
+            stmt.setString(2, req.getParameter("cpfCnpj"));
+            stmt.setString(3, req.getParameter("telefone"));
+            stmt.setString(4, req.getParameter("email"));
             stmt.execute();
             stmt.close();
+            return true;
         } catch (SQLException ex) {
             log.error("Erro ao salvar/criar cliente -> " + ex.getMessage());
+            return false;
         } finally {
             closeConnection();
         }
     }
 
-    public void deleteById (int id) {
+    public void deleteByCpfCnpj(HttpServletRequest req) {
         try {
             connection = makeConnection();
             PreparedStatement stmt = connection.prepareStatement(Constantes.DELETE_CLIENTE);
-            stmt.setInt(1, id);
+            stmt.setString(1, req.getParameter("cpfCnpj"));
             stmt.executeUpdate();
         } catch (SQLException e) {
             log.error("Erro ao deletar cliente -> " + e.getMessage());
@@ -97,64 +106,4 @@ public class ClienteService {
                 resultSet.getString("telefone"),
                 resultSet.getString("email"));
     }
-
-    public static void main(String[] args) {
-        ClienteService clienteService = new ClienteService();
-        clienteService.save();
-        clienteService.deleteById(2);
-        List<Cliente> clientes = clienteService.findAll();
-        clientes.forEach(System.out::println);
-    }
 }
-    // CODIGO ANTIGO
-    /*public List<Cliente> salvar(HttpServletRequest request, List<Cliente> clientes) {
-
-
-        Cliente clienteAlterado = null;
-        if(!clientes.isEmpty()) {
-            clienteAlterado = findCliente(clientes, request);
-        }
-        if(clienteAlterado != null) {
-            Cliente clienteAlteracao = criarCliente(request);
-            return update(clientes, clienteAlteracao, clienteAlterado);
-        } else {
-            Cliente cliente = criarCliente(request);
-            if (!cliente.getId().isEmpty()) {
-                clientes.add(cliente);
-            }
-        }
-        return clientes;
-    }
-
-    public List<Cliente> deletar(HttpServletRequest req, List<Cliente> clientes) {
-        String id =  Optional.of(req.getParameter("idCliente")).orElse("");
-        if (!id.isEmpty()) {
-            return clientes.stream().filter(c -> !c.getId().equals(id)).collect(Collectors.toList());
-        } else {
-            return clientes;
-        }
-    }
-
-    private List<Cliente> update(List<Cliente> clientes, Cliente clienteAlteracao, Cliente clienteAlterado){
-        int clienteIndex = clientes.indexOf(clienteAlterado);
-        if (clienteIndex != -1) {
-            clientes.set(clienteIndex, clienteAlteracao);
-        }
-        return clientes;
-    }
-
-    public Cliente findCliente(List<Cliente> clientes, HttpServletRequest req) {
-        String id =  Optional.of(req.getParameter("idCliente")).orElse(null);
-        return clientes.stream().filter(c -> c.getId().equals(id)).findAny().orElse(null);
-    }
-
-    private Cliente criarCliente(HttpServletRequest req) {
-        return new Cliente(
-                Optional.of(req.getParameter("idCliente")).orElse(null),
-                Optional.of(req.getParameter("nomeCliente")).orElse(null),
-                Optional.of(req.getParameter("cpfCliente")).orElse(null),
-                Optional.of(req.getParameter("telefoneCliente")).orElse(null),
-                Optional.of(req.getParameter("emailCliente")).orElse(null),
-                Optional.of(enderecoService.criarEndereco(req)).orElse(null));
-    }
-}*/

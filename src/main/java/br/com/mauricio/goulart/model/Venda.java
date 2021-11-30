@@ -16,7 +16,7 @@ public class Venda {
     private String nomeProduto;
     private BigDecimal valor;
 
-    public float getValorTotal() {
-        return valor.floatValue() * quantidade;
+    public BigDecimal getValorTotal() {
+        return new BigDecimal(valor.floatValue() * quantidade);
     }
 }
