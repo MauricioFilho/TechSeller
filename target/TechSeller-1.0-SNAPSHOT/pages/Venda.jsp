@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.List" %>
-<%@ page import = "javax.servlet.jsp.*" %>
 <%@ page import="br.com.mauricio.goulart.model.Venda" %>
 <!DOCTYPE html>
 <html>
@@ -9,12 +8,8 @@
     <link rel="stylesheet" href="../css/bootstrap-theme.css"/>
     <link rel="stylesheet" href="../css/bootstrap2-toggle.min.css"/>
     <link rel="stylesheet" href="../css/bootstrap.css"/>
-    <link rel="stylesheet" href="../css/font-awesome.css"/>
-    <link rel="stylesheet" href="../css/tv-rodape.css"/>
-    <link rel="stylesheet" href="../css/tv.css"/>
     <link rel="stylesheet" href="../css/bootstrap-responsive.css"/>
-    <link rel="stylesheet" href="../css/style.css"/>
-    <title>Cadastro de clientes</title>
+    <title>Cadastro de Vendas</title>
 </head>
 <body>
 <form action="cadastro-vendas" method="post">
@@ -39,7 +34,7 @@
 <form>
     <div class="checkbox">
         <table class="table table-bordered text-center">
-            <caption><h2>Lista de usuarios</h2></caption>
+            <caption><h2>Lista de vendas</h2></caption>
             <tr >
                 <th>ID</th>
                 <th>Nome</th>

@@ -1,6 +1,5 @@
 package br.com.mauricio.goulart.service;
 
-import br.com.mauricio.goulart.model.Cliente;
 import br.com.mauricio.goulart.model.Endereco;
 import br.com.mauricio.goulart.resources.Constantes;
 import com.mysql.cj.jdbc.Driver;

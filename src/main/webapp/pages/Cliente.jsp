@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="br.com.mauricio.goulart.model.Cliente"%>
 <%@ page import="java.util.List" %>
-<%@ page import = "javax.servlet.jsp.*" %>
+<%@ page import="br.com.mauricio.goulart.model.Cliente"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,11 +8,7 @@
     <link rel="stylesheet" href="../css/bootstrap-theme.css"/>
     <link rel="stylesheet" href="../css/bootstrap2-toggle.min.css"/>
     <link rel="stylesheet" href="../css/bootstrap.css"/>
-    <link rel="stylesheet" href="../css/font-awesome.css"/>
-    <link rel="stylesheet" href="../css/tv-rodape.css"/>
-    <link rel="stylesheet" href="../css/tv.css"/>
     <link rel="stylesheet" href="../css/bootstrap-responsive.css"/>
-    <link rel="stylesheet" href="../css/style.css"/>
     <title>Cadastro de clientes</title>
 </head>
 <body>
