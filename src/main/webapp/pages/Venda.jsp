@@ -12,7 +12,7 @@
     <title>Cadastro de Vendas</title>
 </head>
     <body>
-        <form action="cadastro-vendas" method="post">
+        <form action="cadastro-venda" method="post">
             <div class="page-header checkbox">
                 <h1>Cadastro Venda</h1>
             </div>

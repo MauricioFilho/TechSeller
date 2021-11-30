@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.List;
 
 @NoArgsConstructor
-@WebServlet(name = "VendaServlet", urlPatterns = {"/cadastro-vendas"})
+@WebServlet(name = "VendaServlet", urlPatterns = {"/cadastro-venda"})
 public class VendaServlet extends HttpServlet {
     VendaService vendaService = new VendaService();
     RequestDispatcher rd;
